@@ -270,7 +270,7 @@ $ kubectl get pods -n istio-system | grep prometheus
 
 1. Start Grafana Port-Forwarding
 ```sh
-kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000 &
+$ kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000 &
 ```
 
 2. Open Grafana
