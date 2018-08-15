@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ambassador
+  labels:
+    app: ambassador
+    service: ambassador-admin
+  annotations:
+    getambassador.io/config: |
+      ---
+      apiVersion: ambassador/v0
+      kind: TracingService
+      name: tracing
+      service: "zipkin.istio-system:9411"
+      driver: zipkin
+      config: {}
+spec:
+  type: LoadBalancer
+  ports:
+   - port: 80
+     name: http
+  selector:
+    service: ambassador
