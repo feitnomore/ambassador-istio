@@ -336,13 +336,17 @@ Please see [Distributed Tracing](https://www.getambassador.io/reference/services
 
 Istio also provides a Prometheus service that is an open-source monitoring and alerting system which is supported by Ambassador as well. It is possible to integrate Ambassador into Istio's Prometheus to have all statistics and monitoring in a single place.  
 
-First we need to change our Ambassador Deployment to use the [Prometheus StatsD Exporter](https://github.com/prometheus/statsd_exporter) as its sidecar. This is done by changing the StatsD container definition on our Deployment as below:
+First we need to change our Ambassador Deployment to use the [Prometheus StatsD Exporter](https://github.com/prometheus/statsd_exporter) as its sidecar. Do this by apllying the [ambassador-rbac-prometheus.yaml](https://www.getambassador.io/yaml/ambassador/ambassador-rbac-prometheus.yaml):
+```sh
+$ kubectl apply -f https://www.getambassador.io/yaml/ambassador/ambassador-rbac-prometheus.yaml
+```
+
+This YAML is changing the StatsD container definition on our Deployment to use the Prometheus StatsD Exporter as a sidecar:
 ```yaml
       - name: statsd-sink
         image: datawire/prom-statsd-exporter:0.6.0
       restartPolicy: Always
 ```
-An [example](https://www.getambassador.io/yaml/ambassador/ambassador-rbac-prometheus.yaml) of a complete Ambassador installation file with Prometheus sidecar is also available.
 
 Next, a Service needs to be created pointing to our `Prometheus StatsD Exporter` sidecar:
 ```yaml
