@@ -362,7 +362,12 @@ spec:
     service: ambassador
 ```
 
-Now we need to add a `scrape` configuration to Istio's Prometheus. This is done by editting `prometheus` ConfigMap that is on `istio-system` Namespace and adding:
+Now we need to add a `scrape` configuration to Istio's Prometheus so that it can pool data from our Ambassador. This is done by applying the new ConfigMap:
+```sh
+$ kubectl apply -f https://github.com/file.yaml
+```
+
+This ConfigMap YAML is changing `prometheus` ConfigMap that is on `istio-system` Namespace and adding the following:
 ```yaml
     - job_name: 'ambassador'
       static_configs:
@@ -371,7 +376,8 @@ Now we need to add a `scrape` configuration to Istio's Prometheus. This is done 
 ```
 
 *Note:* Assuming ambassador-monitor service is runnning on default namespace.  
-This can be added either by editting the ConfigMap on the fly using the dashboard or kubectl, or by extracting the ConfigMap definition from Istio's YAML. An extracted YAML is provided as example [here](https://github.com/blablabla).
+
+*Note:* You can also add the scrape by hand by using kubectl edit or dashboard.
 
 Afer adding the `scrape`, Istio's Prometheus POD needs to be restarted:
 ```sh
